@@ -71,7 +71,6 @@ const PRODUCTS = [
     { id: 62, name: "Colar Dois Corações Entrelaçados", price: 99, category: "COLARES FEMININO", image: "Colar Prata 925 com Pingente de Dois Corações Entrelaçados.jpg", isBestSeller: false },
     { id: 63, name: "Colar Patinha", price: 99, category: "COLARES FEMININO", image: "Colar Prata 925 Legítima Pingente Patinha Pet Zircônias Pretas.jpg", isBestSeller: false },
     { id: 64, name: "Conjunto Coração Verde Esmeralda", price: 100, category: "COLARES FEMININO", image: "CONJUNTO CORAÇÃO VERDE ESMERALDA EM PRATA 925.jpeg", isBestSeller: true },
-    { id: 65, name: "Conjunto Coração Vermelho", price: 100, category: "COLARES FEMININO", image: "Conjunto Coração vermelho em Prata 925.jpg", isBestSeller: true },
     { id: 66, name: "Conjunto Ponto de Luz Verde Esmeralda", price: 99, category: "COLARES FEMININO", image: "Conjunto Ponto de Luz Prata 925 Verde Esmeralda (Colar + Brincos).jpg", isBestSeller: false },
     { id: 67, name: "Conjunto Coração Prata 925 Legítima - Colar Veneziana + Brincos Azul Turquesa", price: 99, category: "COLARES FEMININO", image: "Conjunto Coração Prata 925 Legítima - Colar Veneziana + Brincos Azul Turquesa.jpg", isBestSeller: true },
     { id: 68, name: "Gargantilha 6 Fios", price: 550, category: "COLARES FEMININO", image: "Gargantilha 6 Fios em Prata 925.jpg", isBestSeller: true },
