@@ -590,401 +590,21 @@ function finalizeWhatsAppOrder() {
     window.open(whatsappUrl, '_blank');
 }
 
-// LÓGICA DE JOGOS E ROLETA
+// LÓGICA DA ROLETA EXCLUSIVA COM TEMPORIZADOR DE 24 HORAS
 function openGame(gameKey) {
-    trackGA4Event('inicio_jogo', { game: gameKey });
+    trackGA4Event('inicio_jogo', { game: 'roulette' });
     const modal = document.getElementById('gameModal');
     const container = document.getElementById('gameContainer');
     modal.classList.add('active');
 
-    if (gameKey === 'memory') renderMemoryGame(container);
-    else if (gameKey === 'quiz') renderQuizGame(container);
-    else if (gameKey === 'wordsearch') renderWordSearchGame(container);
-    else if (gameKey === 'challenge') renderChallengeGame(container);
-    else if (gameKey === 'roulette') renderRouletteGame(container);
+    renderRouletteGame(container);
 }
 
 function closeGameModal() {
     document.getElementById('gameModal').classList.remove('active');
 }
 
-function finishMinigame(gameName) {
-    trackGA4Event('conclusao_jogo', { game: gameName });
-    const container = document.getElementById('gameContainer');
-    container.innerHTML = `
-        <div class="game-box">
-            <h2>🎉 Parabéns! Você concluiu o ${gameName}!</h2>
-            <p style="margin: 20px 0; color: var(--text-secondary);">Agora você foi liberado para girar a Roleta de Descontos e conquistar seu benefício exclusivo!</p>
-            <button class="btn btn-silver" onclick="renderRouletteGame(document.getElementById('gameContainer'))">Ir para a Roleta de Descontos 🎡</button>
-        </div>
-    `;
-}
-
-// JOGO 1: MEMÓRIA (COM ROTAÇÃO ALEATÓRIA DE CARTAS A CADA INÍCIO)
-function renderMemoryGame(container) {
-    // Sorteia 4 produtos aleatórios do catálogo a cada partida
-    const shuffledProducts = [...PRODUCTS].sort(() => Math.random() - 0.5);
-    const sampleProducts = shuffledProducts.slice(0, 4);
-    
-    let cards = [...sampleProducts, ...sampleProducts].sort(() => Math.random() - 0.5);
-    let flippedCards = [];
-    let matchedPairs = 0;
-
-    container.innerHTML = `
-        <div class="game-box">
-            <h2>💎 Jogo da Memória</h2>
-            <p>Encontre os 4 pares de joias para avançar!</p>
-            <div class="memory-board" id="memoryBoard"></div>
-        </div>
-    `;
-
-    const board = document.getElementById('memoryBoard');
-    cards.forEach((item, index) => {
-        const cardEl = document.createElement('div');
-        cardEl.className = 'memory-card';
-        cardEl.dataset.id = item.id;
-        cardEl.dataset.index = index;
-        cardEl.innerHTML = `❓`;
-        cardEl.onclick = () => {
-            if (flippedCards.length < 2 && !cardEl.classList.contains('flipped')) {
-                cardEl.classList.add('flipped');
-                cardEl.innerHTML = `<img src="${item.image}" alt="Joia" style="object-fit: contain; width: 100%; height: 100%;" onerror="this.onerror=null; this.src='https://via.placeholder.com/50/222/fff?text=Joia';">`;
-                flippedCards.push({ cardEl, item });
-
-                if (flippedCards.length === 2) {
-                    if (flippedCards[0].item.id === flippedCards[1].item.id) {
-                        matchedPairs++;
-                        flippedCards = [];
-                        if (matchedPairs === 4) {
-                            setTimeout(() => finishMinigame('Jogo da Memória'), 800);
-                        }
-                    } else {
-                        setTimeout(() => {
-                            flippedCards.forEach(c => {
-                                c.cardEl.classList.remove('flipped');
-                                c.cardEl.innerHTML = `❓`;
-                            });
-                            flippedCards = [];
-                        }, 1000);
-                    }
-                }
-            }
-        };
-        board.appendChild(cardEl);
-    });
-}
-
-// JOGO 2: QUIZ (5 PERGUNTAS ALEATÓRIAS E CONTADOR DE ACERTOS)
-function renderQuizGame(container) {
-    const allQuestions = [
-        { q: "Qual o teor de prata pura na Prata 925?", options: ["92,5%", "50%", "100%", "75%"], correct: "92,5%" },
-        { q: "Qual desses cuidados ajuda a manter o brilho da prata?", options: ["Usar Limpa Pratas adequado", "Lavar com água salgada", "Guardar ao sol", "Usar perfume direto na peça"], correct: "Usar Limpa Pratas adequado" },
-        { q: "A Prata 950 contém mais prata pura que a 925?", options: ["Sim, possui 95% de prata pura", "Não, é inferior", "São idênticas", "Depende do tamanho"], correct: "Sim, possui 95% de prata pura" },
-        { q: "O escurecimento da prata (oxidação) é um processo normal?", options: ["Sim, é uma reação natural ao enxofre/suor", "Não, é defeito", "Só ocorre na prata falsa", "Nunca escurece"], correct: "Sim, é uma reação natural ao enxofre/suor" },
-        { q: "Qual é o nome do produto indicado para devolver o brilho às suas joias?", options: ["Limpa Pratas", "Detergente de louça", "Álcool 70%", "Sabão em pó"], correct: "Limpa Pratas" },
-        { q: "Qual o metal de liga mais comum usado na Prata 925?", options: ["Cobre", "Ouro", "Alumínio", "Ferro"], correct: "Cobre" },
-        { q: "Como guardar suas joias de prata para evitar oxidação precoce?", options: ["Em local seco, fechado e longe da umidade", "Expostas ao ar livre", "No banheiro", "Junto com bijuterias"], correct: "Em local seco, fechado e longe da umidade" },
-        { q: "O que a Zircônia representa nas joias em Prata 925?", options: ["Uma gema sintética de alto brilho que imita o diamante", "Um tipo de plástico", "Um metal pesado", "Uma tinta prateada"], correct: "Uma gema sintética de alto brilho que imita o diamante" }
-    ];
-
-    // Embaralha e seleciona 5 perguntas por partida
-    const selectedQuestions = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, 5);
-
-    let currentStep = 0;
-    let acertos = 0;
-
-    function showQuestion() {
-        const current = selectedQuestions[currentStep];
-        // Embaralha as alternativas de resposta da pergunta atual
-        const shuffledOptions = [...current.options].sort(() => Math.random() - 0.5);
-
-        container.innerHTML = `
-            <div class="game-box" style="text-align: center; padding: 20px;">
-                <span style="font-size: 14px; color: var(--text-secondary);">Pergunta ${currentStep + 1} de ${selectedQuestions.length}</span>
-                <h3 style="margin: 15px 0 20px;">${current.q}</h3>
-                <div style="display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: 0 auto;">
-                    ${shuffledOptions.map(opt => `
-                        <button class="btn btn-outline" style="width: 100%; text-align: left; padding: 12px 15px;" onclick="checkQuizAnswer('${opt.replace(/'/g, "\\'")}')">
-                            ${opt}
-                        </button>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-    }
-
-    window.checkQuizAnswer = (selectedOption) => {
-        if (selectedOption === selectedQuestions[currentStep].correct) {
-            acertos++;
-        }
-
-        currentStep++;
-
-        if (currentStep < selectedQuestions.length) {
-            showQuestion();
-        } else {
-            let mensagem = "";
-            const porcentagem = (acertos / selectedQuestions.length) * 100;
-
-            if (porcentagem === 100) {
-                mensagem = "🏆 Perfeito! Você é um verdadeiro especialista em Prata 925!";
-            } else if (porcentagem >= 60) {
-                mensagem = "👏 Muito bom! Você tem ótimos conhecimentos sobre nossas joias!";
-            } else {
-                mensagem = "💡 Boa tentativa! Que tal ler nossas dicas sobre prata para acertar tudo na próxima?";
-            }
-
-            container.innerHTML = `
-                <div style="text-align: center; padding: 25px;">
-                    <h2 style="font-size: 22px; margin-bottom: 15px;">Fim do Quiz! 🎉</h2>
-                    <p style="font-size: 18px; margin-bottom: 10px;">Você acertou <strong>${acertos}</strong> de <strong>${selectedQuestions.length}</strong> perguntas.</p>
-                    <p style="color: var(--text-secondary); margin-bottom: 25px;">${mensagem}</p>
-                    <button onclick="renderQuizGame(document.getElementById('gameContainer'))" class="btn btn-outline" style="width: 100%; max-width: 250px;">
-                        Jogar Novamente 🔄
-                    </button>
-                </div>
-            `;
-        }
-    };
-
-    showQuestion();
-}
-
-// JOGO 3: CAÇA-PALAVRAS (GRID EXPANDIDO, DIREÇÕES VARIADAS E DISTRIBUIÇÃO DINÂMICA)
-function renderWordSearchGame(container) {
-    const wordPool = ["PRATA", "ANEL", "BRINCO", "COLAR", "JOIA", "PINGENTE", "CORRENTE", "PULSEIRA", "ALIANCA", "SOLITARIO", "CHOKER", "ZEBRA", "BRIO"];
-    
-    // Sorteia 6 palavras da lista
-    const selectedWords = [...wordPool].sort(() => Math.random() - 0.5).slice(0, 6);
-    
-    const ROWS = 10;
-    const COLS = 10;
-    let grid = Array.from({ length: ROWS }, () => Array(COLS).fill(''));
-    let placedWordDetails = [];
-
-    // Direções: Horizontal (0,1), Vertical (1,0), Diagonal Abai-Dir (1,1), Diagonal Acim-Dir (-1,1)
-    const directions = [
-        { r: 0, c: 1 },
-        { r: 1, c: 0 },
-        { r: 1, c: 1 },
-        { r: -1, c: 1 }
-    ];
-
-    // Tenta posicionar as palavras sorteadas no grid
-    selectedWords.forEach(word => {
-        let placed = false;
-        let attempts = 0;
-
-        while (!placed && attempts < 200) {
-            attempts++;
-            const dir = directions[Math.floor(Math.random() * directions.length)];
-            const startRow = Math.floor(Math.random() * ROWS);
-            const startCol = Math.floor(Math.random() * COLS);
-
-            let endRow = startRow + dir.r * (word.length - 1);
-            let endCol = startCol + dir.c * (word.length - 1);
-
-            if (endRow >= 0 && endRow < ROWS && endCol >= 0 && endCol < COLS) {
-                let fits = true;
-                for (let i = 0; i < word.length; i++) {
-                    let r = startRow + dir.r * i;
-                    let c = startCol + dir.c * i;
-                    if (grid[r][c] !== '' && grid[r][c] !== word[i]) {
-                        fits = false;
-                        break;
-                    }
-                }
-
-                if (fits) {
-                    let cells = [];
-                    for (let i = 0; i < word.length; i++) {
-                        let r = startRow + dir.r * i;
-                        let c = startCol + dir.c * i;
-                        grid[r][c] = word[i];
-                        cells.push({ r, c });
-                    }
-                    placedWordDetails.push({ name: word, cells });
-                    placed = true;
-                }
-            }
-        }
-    });
-
-    // Preenche os espaços vazios com letras maiúsculas aleatórias
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < COLS; c++) {
-            if (grid[r][c] === '') {
-                grid[r][c] = alphabet[Math.floor(Math.random() * alphabet.length)];
-            }
-        }
-    }
-
-    let foundWords = [];
-
-    let gridHtml = '';
-    for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < COLS; c++) {
-            gridHtml += `<div class="ws-cell" data-row="${r}" data-col="${c}" onclick="clickWordSearchCell(${r}, ${c})">${grid[r][c]}</div>`;
-        }
-    }
-
-    container.innerHTML = `
-        <div class="game-box">
-            <h2>🔎 Caça-palavras da Prata</h2>
-            <p style="font-size: 0.85rem; margin-bottom: 12px; color: var(--text-secondary);">Encontre as ${placedWordDetails.length} palavras no grid (horizontal, vertical e diagonal):</p>
-            
-            <div class="ws-grid-container" style="display: grid; grid-template-columns: repeat(${COLS}, 1fr); gap: 4px; max-width: 340px; margin: 0 auto 15px auto;">
-                ${gridHtml}
-            </div>
-
-            <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;">
-                ${placedWordDetails.map(w => `<span id="ws-badge-${w.name}" style="padding: 4px 8px; background: rgba(255,255,255,0.1); border-radius: 12px; font-size: 0.75rem; color: #ccc;">${w.name}</span>`).join('')}
-            </div>
-        </div>
-        <style>
-            .ws-cell {
-                aspect-ratio: 1;
-                background: #2a2a35;
-                color: #ffffff;
-                font-weight: bold;
-                font-size: 0.85rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 4px;
-                cursor: pointer;
-                user-select: none;
-                transition: background 0.2s;
-            }
-            .ws-cell.selected {
-                background: #25d366 !important;
-                color: #000000 !important;
-            }
-            .ws-cell.found {
-                background: #25d366 !important;
-                color: #000000 !important;
-            }
-        </style>
-    `;
-
-    window.clickWordSearchCell = (r, c) => {
-        const cellEl = document.querySelector(`.ws-cell[data-row="${r}"][data-col="${c}"]`);
-        if (cellEl) {
-            cellEl.classList.toggle('selected');
-        }
-
-        // Verifica se alguma palavra não encontrada foi completada
-        placedWordDetails.forEach(wordObj => {
-            if (!foundWords.includes(wordObj.name)) {
-                let allSelected = true;
-                wordObj.cells.forEach(cell => {
-                    const el = document.querySelector(`.ws-cell[data-row="${cell.r}"][data-col="${cell.c}"]`);
-                    if (!el || !el.classList.contains('selected')) {
-                        allSelected = false;
-                    }
-                });
-
-                if (allSelected) {
-                    foundWords.push(wordObj.name);
-                    const badge = document.getElementById(`ws-badge-${wordObj.name}`);
-                    if (badge) {
-                        badge.style.background = '#25d366';
-                        badge.style.color = '#000';
-                        badge.style.fontWeight = 'bold';
-                        badge.innerHTML = `✓ ${wordObj.name}`;
-                    }
-
-                    wordObj.cells.forEach(cell => {
-                        const el = document.querySelector(`.ws-cell[data-row="${cell.r}"][data-col="${cell.c}"]`);
-                        if (el) el.classList.add('found');
-                    });
-
-                    if (foundWords.length === placedWordDetails.length) {
-                        setTimeout(() => finishMinigame('Caça-palavras'), 600);
-                    }
-                }
-            }
-        });
-    };
-}
-
-// JOGO 4: DESAFIO DA PRATA (EXPANDIDO COM ROTAÇÃO E PERGUNTAS ALEATÓRIAS)
-function renderChallengeGame(container) {
-// Lista de desafios focada exclusivamente em Joias de Prata 925
-    const allChallenges = [
-        { q: "Qual destas peças é uma Corrente Grumet?", targetId: 76, options: [76, 24, 90, 105] },
-        { q: "Qual destas peças é um Anel Solitário?", targetId: 24, options: [24, 35, 80, 111] },
-        { q: "Qual destas peças é um Pingente Cruz Palito?", targetId: 90, options: [90, 84, 86, 95] },
-        { q: "Qual destas peças é uma Pulseira Coração Vermelho?", targetId: 117, options: [117, 113, 120, 123] },
-        { q: "Qual destas peças é um Piercing de Nariz?", targetId: 132, options: [132, 133, 37, 42] }
-    ];
-
-    // Sorteia 5 desafios aleatórios por partida
-    const selectedChallenges = [...allChallenges].sort(() => Math.random() - 0.5).slice(0, 5);
-
-    let step = 0;
-    let acertos = 0; // Contador de acertos
-
-    function showChallenge() {
-        const current = selectedChallenges[step];
-        // Embaralha a ordem das opções exibidas
-        const shuffledOptions = [...current.options].sort(() => Math.random() - 0.5);
-        const optProducts = shuffledOptions.map(id => PRODUCTS.find(p => p.id === id));
-
-        container.innerHTML = `
-            <div class="game-box">
-                <h2>🥈 Desafio da Prata</h2>
-                <p style="margin-bottom: 20px;">${current.q}</p>
-                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                    ${optProducts.map(p => `
-                        <div style="cursor: pointer; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; width: 140px;" onclick="checkChallengeAnswer(${p.id})">
-                            <img src="${p.image}" style="width: 100%; height: 100px; object-fit: contain; background: #121216; border-radius: 6px;" onerror="this.onerror=null; this.src='https://via.placeholder.com/100/222/fff?text=Joia';">
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-    }
-
-    window.checkChallengeAnswer = (selectedId) => {
-        if (selectedId === selectedChallenges[step].targetId) {
-            acertos++;
-        }
-
-        step++;
-
-        if (step < selectedChallenges.length) {
-            showChallenge();
-        } else {
-            let mensagem = "";
-            const porcentagem = (acertos / selectedChallenges.length) * 100;
-
-            if (porcentagem === 100) {
-                mensagem = "🏆 Mestre da Prata 925! Você acertou tudo!";
-            } else if (porcentagem >= 60) {
-                mensagem = "👏 Muito bem! Você conhece muito bem nossas joias!";
-            } else {
-                mensagem = "💡 Quase lá! Que tal dar uma olhada no nosso catálogo para conhecer mais?";
-            }
-
-            container.innerHTML = `
-                <div style="text-align: center; padding: 25px;">
-                    <h2 style="font-size: 22px; margin-bottom: 15px;">Fim do Desafio! 🎉</h2>
-                    <p style="font-size: 18px; margin-bottom: 10px;">Você acertou <strong>${acertos}</strong> de <strong>${selectedChallenges.length}</strong> perguntas.</p>
-                    <p style="color: var(--text-secondary); margin-bottom: 25px;">${mensagem}</p>
-                    <button onclick="renderChallengeGame(document.getElementById('gameContainer'))" class="btn btn-outline" style="width: 100%; max-width: 250px;">
-                        Jogar Novamente 🔄
-                    </button>
-                </div>
-            `;
-        }
-    };
-
-    showChallenge();
-}
-
-// JOGO 5: ROLETA DE DESCONTOS (ALINHAMENTO PERFEITO DE TEXTOS E CORES)
+// JOGO: ROLETA DE DESCONTOS (COM CONTROLE DE 24H E TEMPORIZADOR)
 function renderRouletteGame(container) {
     const prizes = [
         { label: "8%", color: "#8cc63f" },
@@ -999,16 +619,14 @@ function renderRouletteGame(container) {
         { label: "5%", color: "#a3d39c" }
     ];
 
-    const sliceAngle = 360 / prizes.length; // 36deg por fatia
+    const sliceAngle = 360 / prizes.length;
 
-    // Constrói o gradiente cónico para as 10 fatias de cores
     const conicGradient = prizes.map((p, i) => {
         const start = i * sliceAngle;
         const end = (i + 1) * sliceAngle;
         return `${p.color} ${start}deg ${end}deg`;
     }).join(', ');
 
-    // Gera os elementos de texto alinhados exatamente no meio de cada fatia
     const labelsHTML = prizes.map((p, i) => {
         const centerAngle = i * sliceAngle + (sliceAngle / 2);
         return `
@@ -1028,12 +646,53 @@ function renderRouletteGame(container) {
                     font-weight: bold;
                     font-size: 15px;
                     text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-                    transform: rotate(0deg);
                 ">${p.label}</span>
             </div>
         `;
     }).join('');
 
+    // Verifica se já existe um giro registrado e o tempo restante (24 horas)
+    const lastSpinTime = localStorage.getItem('oliveira_last_spin');
+    const now = new Date().getTime();
+    const cooldownTime = 24 * 60 * 60 * 1000; // 24 horas em milissegundos
+    let timeRemaining = lastSpinTime ? cooldownTime - (now - parseInt(lastSpinTime)) : 0;
+
+    if (timeRemaining > 0) {
+        // Exibe a tela de bloqueio com o temporizador regressivo
+        container.innerHTML = `
+            <div class="game-box" style="text-align: center; padding: 25px;">
+                <h2>⏳ Volte em breve!</h2>
+                <p style="margin: 15px 0 10px; color: var(--text-secondary);">Você já girou a roleta recentemente. Um novo giro estará disponível em:</p>
+                <div id="rouletteTimer" style="font-size: 24px; font-weight: bold; color: #00a88f; margin: 20px 0;">--:--:--</div>
+                <p style="font-size: 13px; color: var(--text-secondary);">Aproveite seu desconto atual no carrinho!</p>
+            </div>
+        `;
+
+        // Atualiza o temporizador a cada segundo
+        const timerInterval = setInterval(() => {
+            const currentNow = new Date().getTime();
+            const currentRemaining = cooldownTime - (currentNow - parseInt(localStorage.getItem('oliveira_last_spin')));
+
+            if (currentRemaining <= 0) {
+                clearInterval(timerInterval);
+                renderRouletteGame(container); // Recarrega a roleta quando o tempo acabar
+                return;
+            }
+
+            const hours = Math.floor((currentRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((currentRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((currentRemaining % (1000 * 60)) / 1000);
+
+            const timerEl = document.getElementById('rouletteTimer');
+            if (timerEl) {
+                timerEl.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }
+        }, 1000);
+
+        return;
+    }
+
+    // Renderiza a roleta normalmente se o tempo já expirou ou se for o primeiro acesso
     container.innerHTML = `
         <div class="game-box" style="text-align: center; padding: 20px;">
             <h2>🎰 Roleta de Descontos</h2>
@@ -1100,21 +759,20 @@ function renderRouletteGame(container) {
         const winningIndex = Math.floor(Math.random() * prizes.length);
         const winningPrize = prizes[winningIndex];
 
-        // Calcula a rotação para alinhar a fatia sorteada com o marcador superior (0 deg)
         const centerAngle = winningIndex * sliceAngle + (sliceAngle / 2);
         const targetDegrees = 3600 + (360 - centerAngle);
 
         wheel.style.transform = `rotate(${targetDegrees}deg)`;
+
+        // Salva o momento exato do giro no localStorage
+        localStorage.setItem('oliveira_last_spin', new Date().getTime().toString());
 
         setTimeout(() => {
             container.innerHTML = `
                 <div style="text-align: center; padding: 25px;">
                     <h2 style="font-size: 22px; margin-bottom: 15px;">Parabéns! 🎉</h2>
                     <p style="font-size: 18px; margin-bottom: 10px;">Você ganhou <strong>${winningPrize.label} de desconto</strong>!</p>
-                    <p style="color: var(--text-secondary); margin-bottom: 25px;">Utilize no seu carrinho antes de finalizar a compra.</p>
-                    <button onclick="renderRouletteGame(document.getElementById('gameContainer') || this.closest('.game-container') || this.parentElement.parentElement)" class="btn btn-outline" style="width: 100%; max-width: 250px;">
-                        Girar Novamente 🔄
-                    </button>
+                    <p style="color: var(--text-secondary); margin-bottom: 25px;">Utilize no seu carrinho antes de finalizar a compra. Volte em 24h para girar novamente!</p>
                 </div>
             `;
         }, 4200);
