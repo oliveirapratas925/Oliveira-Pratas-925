@@ -827,3 +827,37 @@ function renderRouletteGame(container) {
         }, 4200);
     };
 }
+function closeImageZoom() {
+    const modal = document.getElementById('imageZoomModal');
+    if (modal) {
+        modal.style.display = 'none';
+        window.history.pushState({ path: window.location.pathname }, '', window.location.pathname);
+    }
+}
+
+function copyCurrentProductLink() {
+    if (!currentZoomProductId) return;
+    
+    const productUrl = `${window.location.origin}${window.location.pathname}?produto=${currentZoomProductId}`;
+    
+    navigator.clipboard.writeText(productUrl).then(() => {
+        const feedback = document.getElementById('copyFeedback');
+        feedback.innerText = '✅ Link copiado com sucesso! Cole direto no WhatsApp.';
+        setTimeout(() => {
+            feedback.innerText = '';
+        }, 4000);
+    }).catch(err => {
+        console.error('Erro ao copiar link: ', err);
+    });
+}
+
+// FUNÇÃO PARA AMPLIAR AINDA MAIS A IMAGEM AO CLICAR NELA (ZOOM INTERNO)
+function toggleImageZoom(imgElement) {
+    if (imgElement.style.transform === 'scale(1.8)') {
+        imgElement.style.transform = 'scale(1)';
+        imgElement.style.cursor = 'zoom-in';
+    } else {
+        imgElement.style.transform = 'scale(1.8)';
+        imgElement.style.cursor = 'zoom-out';
+    }
+}
