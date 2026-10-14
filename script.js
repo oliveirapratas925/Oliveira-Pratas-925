@@ -1,5 +1,5 @@
 /* ==========================================================================
-   SCRIPT OLIVEIRA PRATAS 925 - ATUALIZADO (IMAGEM + VÍDEO + LIMPA PRATAS)
+   SCRIPT OLIVEIRA PRATAS 925 - COM URL INDIVIDUAL DE PRODUTOS
    ========================================================================== */
 
 // BASE DE DADOS OFICIAL DE PRODUTOS
@@ -182,7 +182,26 @@ document.addEventListener('DOMContentLoaded', () => {
     renderLimpaPratasCard();
     updateBadges();
     injectImageModalHTML();
+    
+    // Verifica se a URL possui um ID de produto específico (ex: ?produto=37)
+    checkUrlForProduct();
 });
+
+// FUNÇÃO PARA LER O PRODUTO DA URL E ABRIR O ZOOM OU ROLAR ATÉ ELE
+function checkUrlForProduct() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('produto');
+    
+    if (productId) {
+        const product = PRODUCTS.find(p => p.id == productId);
+        if (product) {
+            // Aguarda um instante para garantir o carregamento do DOM e abre o zoom do produto direto
+            setTimeout(() => {
+                openImageZoom(product.image, product.name, product.id);
+            }, 400);
+        }
+    }
+}
 
 // MENU MOBILE
 function toggleMenu() {
@@ -245,7 +264,7 @@ function renderCatalog(items = PRODUCTS) {
 
 function renderBestSellers() {
     const grid = document.getElementById('bestSellersGrid');
-    if (!grid) return; // Proteção para não dar erro se o elemento não existir
+    if (!grid) return;
     
     const bestSellers = PRODUCTS.filter(p => p.isBestSeller);
     grid.innerHTML = bestSellers.map(product => createProductCardHTML(product)).join('');
@@ -255,7 +274,7 @@ function createProductCardHTML(product) {
     const isFav = favorites.includes(product.id);
     return `
         <div class="product-card">
-            <div class="product-img-wrapper" style="cursor: pointer;" onclick="openImageZoom('${product.image}', '${product.name}')" title="Clique para ver a imagem inteira">
+            <div class="product-img-wrapper" style="cursor: pointer;" onclick="openImageZoom('${product.image}', '${product.name}', ${product.id})" title="Clique para ver a imagem inteira e copiar o link">
                 <img src="${product.image}" alt="${product.name}" class="product-img" loading="lazy" style="object-fit: contain; background-color: #121216;" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/222/fff?text=Joia';">
                 <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite(${product.id})">
                     ${isFav ? '❤️' : '🤍'}
@@ -275,34 +294,72 @@ function filterCatalog() {
     renderCatalog();
 }
 
-// CRIAR MODAL DE ZOOM DE IMAGEM DINAMICAMENTE
+// CRIAR MODAL DE ZOOM DE IMAGEM E BOTÃO DE COPIAR LINK DO PRODUTO
 function injectImageModalHTML() {
     if (document.getElementById('imageZoomModal')) return;
     const modalHtml = `
         <div id="imageZoomModal" class="modal" style="display: none; position: fixed; z-index: 99999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; padding: 20px;">
             <span onclick="closeImageZoom()" style="position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; z-index: 100000;">&times;</span>
             <div style="text-align: center; max-width: 90%; max-height: 90%;">
-                <img id="zoomModalImg" src="" alt="Zoom" style="max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+                <img id="zoomModalImg" src="" alt="Zoom" style="max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
                 <p id="zoomModalTitle" style="color: #fff; margin-top: 15px; font-size: 1.1rem; font-weight: 600;"></p>
+                
+                <!-- BOTÃO PARA COPIAR O LINK INDIVIDUAL DO PRODUTO PARA O WHATSAPP -->
+                <div style="margin-top: 15px;">
+                    <button id="copyProductLinkBtn" class="btn btn-silver" style="padding: 10px 20px; font-size: 0.9rem;" onclick="copyCurrentProductLink()">
+                        🔗 Copiar Link da Peça para o WhatsApp
+                    </button>
+                    <span id="copyFeedback" style="display: block; color: #25d366; font-size: 0.85rem; margin-top: 5px; height: 20px;"></span>
+                </div>
             </div>
         </div>
     `;
     document.body.insertAdjacentHTML('beforeend', modalHtml);
 }
 
-function openImageZoom(imgSrc, imgTitle) {
+let currentZoomProductId = null;
+
+function openImageZoom(imgSrc, imgTitle, productId) {
     const modal = document.getElementById('imageZoomModal');
     const modalImg = document.getElementById('zoomModalImg');
     const modalTitle = document.getElementById('zoomModalTitle');
     
+    currentZoomProductId = productId;
     modal.style.display = 'flex';
     modalImg.src = imgSrc;
     modalTitle.innerText = imgTitle;
+    document.getElementById('copyFeedback').innerText = '';
+
+    // Atualiza a URL do navegador sem recarregar a página para gerar o link individual
+    if (productId) {
+        const newUrl = `${window.location.pathname}?produto=${productId}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+    }
 }
 
 function closeImageZoom() {
     const modal = document.getElementById('imageZoomModal');
-    if (modal) modal.style.display = 'none';
+    if (modal) {
+        modal.style.display = 'none';
+        // Limpa o parâmetro da URL ao fechar o zoom se desejar
+        window.history.pushState({ path: window.location.pathname }, '', window.location.pathname);
+    }
+}
+
+function copyCurrentProductLink() {
+    if (!currentZoomProductId) return;
+    
+    const productUrl = `${window.location.origin}${window.location.pathname}?produto=${currentZoomProductId}`;
+    
+    navigator.clipboard.writeText(productUrl).then(() => {
+        const feedback = document.getElementById('copyFeedback');
+        feedback.innerText = '✅ Link copiado com sucesso! Cole direto no WhatsApp.';
+        setTimeout(() => {
+            feedback.innerText = '';
+        }, 4000);
+    }).catch(err => {
+        console.error('Erro ao copiar link: ', err);
+    });
 }
 
 // LÓGICA DE FAVORITOS
@@ -348,7 +405,7 @@ function renderFavoritesModal() {
                 src="${p.image}" 
                 alt="${p.name}" 
                 style="width: 50px; height: 50px; object-fit: contain; background: #121216; border-radius: 6px; flex-shrink: 0; cursor: pointer;"
-                onclick="openImageZoom('${p.image}', '${p.name}')"
+                onclick="openImageZoom('${p.image}', '${p.name}', ${p.id})"
                 onerror="this.onerror=null; this.src='https://via.placeholder.com/50/222/fff?text=Joia';"
             >
             <div style="flex: 1; min-width: 0; padding-right: 5px;">
@@ -428,7 +485,7 @@ function renderCartModal() {
         const subtotal = product.price * item.qty;
         return `
             <div class="cart-item">
-                <img src="${product.image}" class="cart-item-img" alt="${product.name}" style="object-fit: contain; background: #121216; cursor: pointer;" onclick="openImageZoom('${product.image}', '${product.name}')" onerror="this.onerror=null; this.src='https://via.placeholder.com/50/222/fff?text=Joia';">
+                <img src="${product.image}" class="cart-item-img" alt="${product.name}" style="object-fit: contain; background: #121216; cursor: pointer;" onclick="openImageZoom('${product.image}', '${product.name}', ${product.id})" onerror="this.onerror=null; this.src='https://via.placeholder.com/50/222/fff?text=Joia';">
                 <div class="cart-item-details">
                     <div class="cart-item-title">${product.name}</div>
                     <div class="cart-item-price">R$ ${product.price.toFixed(2).replace('.', ',')} x ${item.qty} = <strong>R$ ${subtotal.toFixed(2).replace('.', ',')}</strong></div>
@@ -651,14 +708,12 @@ function renderRouletteGame(container) {
         `;
     }).join('');
 
-    // Verifica se já existe um giro registrado e o tempo restante (24 horas)
     const lastSpinTime = localStorage.getItem('oliveira_last_spin');
     const now = new Date().getTime();
-    const cooldownTime = 24 * 60 * 60 * 1000; // 24 horas em milissegundos
+    const cooldownTime = 24 * 60 * 60 * 1000;
     let timeRemaining = lastSpinTime ? cooldownTime - (now - parseInt(lastSpinTime)) : 0;
 
     if (timeRemaining > 0) {
-        // Exibe a tela de bloqueio com o temporizador regressivo
         container.innerHTML = `
             <div class="game-box" style="text-align: center; padding: 25px;">
                 <h2>⏳ Volte em breve!</h2>
@@ -668,14 +723,13 @@ function renderRouletteGame(container) {
             </div>
         `;
 
-        // Atualiza o temporizador a cada segundo
         const timerInterval = setInterval(() => {
             const currentNow = new Date().getTime();
             const currentRemaining = cooldownTime - (currentNow - parseInt(localStorage.getItem('oliveira_last_spin')));
 
             if (currentRemaining <= 0) {
                 clearInterval(timerInterval);
-                renderRouletteGame(container); // Recarrega a roleta quando o tempo acabar
+                renderRouletteGame(container);
                 return;
             }
 
@@ -692,14 +746,12 @@ function renderRouletteGame(container) {
         return;
     }
 
-    // Renderiza a roleta normalmente se o tempo já expirou ou se for o primeiro acesso
     container.innerHTML = `
         <div class="game-box" style="text-align: center; padding: 20px;">
             <h2>🎰 Roleta de Descontos</h2>
             <p style="margin-bottom: 20px; color: var(--text-secondary);">Gire e ganhe um cupom de desconto exclusivo!</p>
             
             <div style="position: relative; width: 280px; height: 280px; margin: 0 auto 20px;">
-                <!-- Marcador/Ponteiro Superior -->
                 <div style="
                     position: absolute;
                     top: -12px;
@@ -713,7 +765,6 @@ function renderRouletteGame(container) {
                     filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.5));
                 "></div>
 
-                <!-- Roda da Roleta -->
                 <div id="wheelDisk" style="
                     width: 100%; height: 100%;
                     border-radius: 50%;
@@ -726,7 +777,6 @@ function renderRouletteGame(container) {
                     ${labelsHTML}
                 </div>
 
-                <!-- Botão Central Girar -->
                 <button id="spinBtn" onclick="spinWheel()" style="
                     position: absolute;
                     top: 50%; left: 50%;
@@ -764,7 +814,6 @@ function renderRouletteGame(container) {
 
         wheel.style.transform = `rotate(${targetDegrees}deg)`;
 
-        // Salva o momento exato do giro no localStorage
         localStorage.setItem('oliveira_last_spin', new Date().getTime().toString());
 
         setTimeout(() => {
