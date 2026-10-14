@@ -31,7 +31,7 @@
                 <a href="#mais-vendidos" onclick="toggleMenu()">Mais Vendidos</a>
                 <a href="#catalogo" onclick="toggleMenu()">Catálogo</a>
                 <a href="#destaque-instagram" onclick="toggleMenu()">Destaque</a>
-                <a href="#jogos" onclick="toggleMenu()">Jogos</a>
+                <a href="#jogos" onclick="toggleMenu()">Roleta</a>
                 <a href="#sobre" onclick="toggleMenu()">Sobre Nós</a>
                 <a href="#confianca" onclick="toggleMenu()">Garantia</a>
             </nav>
@@ -107,66 +107,38 @@
         </div>
     </section>
 
-    <!-- SEÇÃO DESTAQUE VÍDEO & CUIDADOS (VÍDEO DIRETO + CARD DO PRODUTO) -->
+    <!-- SEÇÃO DESTAQUE VÍDEO & CUIDADOS -->
     <section id="destaque-instagram" class="section-padding dark-bg">
         <div class="container text-center">
             <h2 class="section-title"><span>Confira em Vídeo</span></h2>
             <p style="color: var(--text-secondary); margin-bottom: 25px;">Veja de perto a qualidade, o acabamento e o brilho impecável das nossas joias.</p>
             
-<!-- VÍDEO DIRETO NO SITE -->
-<div class="video-container" style="display: flex; justify-content: center; margin-bottom: 25px;">
-    <video controls playsinline preload="metadata" style="width: 100%; max-width: 320px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-        <source src="comolimparsuaprata.mov" type="video/quicktime">
-        <source src="comolimparsuaprata.mov" type="video/mp4">
-        O seu navegador não suporta a exibição de vídeos.
-    </video>
-</div>
+            <!-- VÍDEO DIRETO NO SITE -->
+            <div class="video-container" style="display: flex; justify-content: center; margin-bottom: 25px;">
+                <video controls playsinline preload="metadata" style="width: 100%; max-width: 320px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                    <source src="comolimparsuaprata.mov" type="video/quicktime">
+                    <source src="comolimparsuaprata.mov" type="video/mp4">
+                    O seu navegador não suporta a exibição de vídeos.
+                </video>
+            </div>
             <!-- CARD DO PRODUTO (RENDERIZADO VIA JS) -->
             <div id="limpaPratasCardContainer" class="highlight-product-container"></div>
         </div>
     </section>
 
-    <!-- JOGOS E INTERAÇÃO -->
+    <!-- ROLETA DE DESCONTOS (EXCLUSIVA) -->
     <section id="jogos" class="section-padding">
         <div class="container text-center">
-            <h2 class="section-title"><span>Interativo</span>Minijogos & Descontos</h2>
-            <p class="games-description">Jogue nossos minijogos exclusivos para desbloquear a <strong>Roleta de Descontos</strong> e ganhar benefícios na sua compra!</p>
-            <p class="games-notice">⚡ Complete qualquer desafio para liberar o seu prêmio do dia!</p>
+            <h2 class="section-title"><span>Exclusivo</span>Roleta de Descontos</h2>
+            <p class="games-description">Gire a nossa roleta exclusiva para desbloquear o seu cupom de desconto para a compra!</p>
+            <p class="games-notice">⚡ Disponível um giro a cada 24 horas!</p>
 
-            <div class="games-grid">
-                <div class="game-card">
-                    <div class="game-icon">💎</div>
-                    <h3>Jogo da Memória</h3>
-                    <p>Encontre os pares das nossas joias exclusivas.</p>
-                    <button class="btn btn-outline btn-block" onclick="openGame('memory')">Jogar Agora</button>
-                </div>
-
-                <div class="game-card">
-                    <div class="game-icon">❓</div>
-                    <h3>Quiz da Prata</h3>
-                    <p>Muitos conhecimentos sobre a Prata Legítima!</p>
-                    <button class="btn btn-outline btn-block" onclick="openGame('quiz')">Jogar Agora</button>
-                </div>
-
-                <div class="game-card">
-                    <div class="game-icon">🔎</div>
-                    <h3>Caça-Palavras</h3>
-                    <p>Encontre os nomes de nossas joias escondidas.</p>
-                    <button class="btn btn-outline btn-block" onclick="openGame('wordsearch')">Jogar Agora</button>
-                </div>
-
-                <div class="game-card">
-                    <div class="game-icon">🥈</div>
-                    <h3>Desafio da Prata</h3>
-                    <p>Identifique a joia correta e mostre que domina o assunto!</p>
-                    <button class="btn btn-outline btn-block" onclick="openGame('challenge')">Jogar Agora</button>
-                </div>
-
-                <div class="game-card highlight-card">
-                    <div class="game-icon">🎡</div>
-                    <h3>Roleta de Descontos</h3>
-                    <p>Complete um jogo acima e conquiste seu desconto!</p>
-                    <button class="btn btn-silver btn-block" onclick="openGame('roulette')">Girar Roleta</button>
+            <div style="max-width: 400px; margin: 0 auto; margin-top: 20px;">
+                <div class="game-card highlight-card" style="padding: 30px;">
+                    <div class="game-icon" style="font-size: 40px; margin-bottom: 10px;">🎡</div>
+                    <h3 style="margin-bottom: 10px;">Roleta de Prêmios</h3>
+                    <p style="margin-bottom: 20px; color: var(--text-secondary);">Teste sua sorte e garanta seu benefício no carrinho.</p>
+                    <button class="btn btn-silver btn-block" onclick="openGame('roulette')">Girar Roleta Agora</button>
                 </div>
             </div>
         </div>
@@ -224,7 +196,7 @@
                 <a href="#inicio">Início</a>
                 <a href="#mais-vendidos">Mais Vendidos</a>
                 <a href="#catalogo">Catálogo</a>
-                <a href="#jogos">Minijogos</a>
+                <a href="#jogos">Roleta</a>
             </div>
 
             <div class="footer-payments">
@@ -239,7 +211,7 @@
         </div>
     </footer>
 
-    <!-- MODAIS DE JOGOS -->
+    <!-- MODAL DA ROLETA -->
     <div id="gameModal" class="modal">
         <div class="modal-content modal-lg">
             <button class="modal-close" onclick="closeGameModal()">✕</button>
