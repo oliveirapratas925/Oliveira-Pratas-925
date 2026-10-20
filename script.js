@@ -86,7 +86,7 @@ const PRODUCTS = [
     { id: 78, name: "Corrente Grumet 7,3mm 70cm com Fecho Gaveta", price: 849, category: "CORRENTES MASCULINAS", image: "Corrente Grumet em Prata 925 - Fecho Gaveta.jpeg", isBestSeller: false },
     { id: 79, name: "Corrente Gucci 3,5mm – 70cm", price: 299, category: "CORRENTES MASCULINAS", image: "Corrente Gucci 3,5mm - 70cm Prata 925.png", isBestSeller: false },
     { id: 80, name: "Corrente Piastrine 3,5mm – 70cm", price: 399, category: "CORRENTES MASCULINAS", image: "Corrente Piastrine 3,5mm - 70cm Prata 925.png", isBestSeller: false },
-    { id: 81, name: "Corrente Grumet 1,5mm 70cm", price: 100, category: "CORRENTES MASCULINAS", image: "Corrente Grumet 1,5mm 70cm.jpg", isBestSeller: false },
+    { id: 81, name: "Corrente Grumet 1,5mm 70cm", price: 80, category: "CORRENTES MASCULINAS", image: "Corrente Grumet 1,5mm 70cm.jpg", isBestSeller: false },
     { id: 82, name: "Corrente Grumet 3mm 70cm", price: 300, category: "CORRENTES MASCULINAS", image: "Corrente Grumet 3mm 70cm.jpg", isBestSeller: false },
     { id: 83, name: "Corrente Terço Grande", price: 250, category: "CORRENTES MASCULINAS", image: "Corrente Terço Grande.jpg", isBestSeller: false },
 
