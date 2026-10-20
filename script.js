@@ -118,7 +118,6 @@ const PRODUCTS = [
     { id: 110, name: "Pingente São Jorge", price: 50, category: "PINGENTES", image: "Pingente São Jorge.jpg", isBestSeller: false },
 
     // PULSEIRAS MASCULINAS
-    { id: 111, name: "Pulseira Grumet elo duplo 3,5mm", price: 149, category: "PULSEIRAS MASCULINAS", image: "Pulseira Grumet elo duplo 3,5mm Prata 925.jpg", isBestSeller: true },
     { id: 112, name: "Pulseira 8,2mm", price: 299, category: "PULSEIRAS MASCULINAS", image: "pulseira8,2mm.jpg", isBestSeller: true },
     { id: 113, name: "Pulseira Esteira 2,4mm", price: 99, category: "PULSEIRAS MASCULINAS", image: "pulseira esteira 2,4mm.jpg", isBestSeller: true },
     { id: 114, name: "Pulseira Grumet Elo Duplo 2mm", price: 80, category: "PULSEIRAS MASCULINAS", image: "Pulseira Grumet elo duplo 2mm.jpg", isBestSeller: true },
