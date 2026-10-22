@@ -54,7 +54,6 @@ const PRODUCTS = [
     { id: 46, name: "Par Brincos Coração Argola Torcida", price: 30, category: "BRINCOS", image: "Par Brincos Coração Argola Torcida.jpg", isBestSeller: false },
     { id: 47, name: "Par Brincos Cravejado Batimentos", price: 50, category: "BRINCOS", image: "Par Brincos Cravejado Batimentos.jpg", isBestSeller: true },
     { id: 48, name: "Par de Brincos Argola Infinito", price: 40, category: "BRINCOS", image: "Par de Brincos Argola Infinito.jpg", isBestSeller: false },
-    { id: 49, name: "Trio Quadrado 3, 4 e 5mm", price: 50, category: "BRINCOS", image: "Trio Quadrado 3, 4 e 5mm.jpg", isBestSeller: false },
     { id: 50, name: "Trio Redondo Pedra Verde 3, 4 e 5mm", price: 40, category: "BRINCOS", image: "Trio Redondo Pedra Verde 3, 4 e 5mm.jpg", isBestSeller: false },
 
     // COLARES FEMININO
