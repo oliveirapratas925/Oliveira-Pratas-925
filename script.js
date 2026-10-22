@@ -861,13 +861,82 @@ function copyCurrentProductLink() {
     });
 }
 
-// FUNÇÃO PARA AMPLIAR AINDA MAIS A IMAGEM AO CLICAR NELA (ZOOM INTERNO)
-function toggleImageZoom(imgElement) {
-    if (imgElement.style.transform === 'scale(1.8)') {
+// CRIAR MODAL DE ZOOM DE IMAGEM E BOTÃO DE COPIAR LINK DO PRODUTO
+function injectImageModalHTML() {
+    if (document.getElementById('imageZoomModal')) return;
+    const modalHtml = `
+        <div id="imageZoomModal" class="modal" style="display: none; position: fixed; z-index: 99999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.92); align-items: center; justify-content: center; padding: 20px;">
+            <span onclick="closeImageZoom()" style="position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; z-index: 100000;">&times;</span>
+            <div style="text-align: center; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center;">
+                <div style="overflow: hidden; max-height: 70vh; border-radius: 8px;">
+                    <img id="zoomModalImg" src="" alt="Zoom" style="max-width: 100%; max-height: 70vh; object-fit: contain; cursor: zoom-in; transition: transform 0.3s ease; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);" onclick="toggleImageModalZoom(this)">
+                </div>
+                <p id="zoomModalTitle" style="color: #fff; margin-top: 15px; font-size: 1.1rem; font-weight: 600;"></p>
+                
+                <!-- BOTÃO PARA COPIAR O LINK INDIVIDUAL DO PRODUTO PARA O WHATSAPP -->
+                <div style="margin-top: 15px;">
+                    <button id="copyProductLinkBtn" class="btn btn-silver" style="padding: 10px 20px; font-size: 0.9rem;" onclick="copyCurrentProductLink()">
+                        🔗 Copiar Link da Peça para o WhatsApp
+                    </button>
+                    <span id="copyFeedback" style="display: block; color: #25d366; font-size: 0.85rem; margin-top: 5px; height: 20px;"></span>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+let currentZoomProductId = null;
+
+function openImageZoom(imgSrc, imgTitle, productId) {
+    const modal = document.getElementById('imageZoomModal');
+    const modalImg = document.getElementById('zoomModalImg');
+    const modalTitle = document.getElementById('zoomModalTitle');
+    
+    currentZoomProductId = productId;
+    modal.style.display = 'flex';
+    modalImg.src = imgSrc;
+    modalImg.style.transform = 'scale(1)';
+    modalImg.style.cursor = 'zoom-in';
+    modalTitle.innerText = imgTitle;
+    document.getElementById('copyFeedback').innerText = '';
+
+    if (productId) {
+        const newUrl = `${window.location.pathname}?produto=${productId}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+    }
+}
+
+function closeImageZoom() {
+    const modal = document.getElementById('imageZoomModal');
+    if (modal) {
+        modal.style.display = 'none';
+        window.history.pushState({ path: window.location.pathname }, '', window.location.pathname);
+    }
+}
+
+function toggleImageModalZoom(imgElement) {
+    if (imgElement.style.transform === 'scale(2)') {
         imgElement.style.transform = 'scale(1)';
         imgElement.style.cursor = 'zoom-in';
     } else {
-        imgElement.style.transform = 'scale(1.8)';
+        imgElement.style.transform = 'scale(2)';
         imgElement.style.cursor = 'zoom-out';
     }
+}
+
+function copyCurrentProductLink() {
+    if (!currentZoomProductId) return;
+    
+    const productUrl = `${window.location.origin}${window.location.pathname}?produto=${currentZoomProductId}`;
+    
+    navigator.clipboard.writeText(productUrl).then(() => {
+        const feedback = document.getElementById('copyFeedback');
+        feedback.innerText = '✅ Link copiado com sucesso! Cole direto no WhatsApp.';
+        setTimeout(() => {
+            feedback.innerText = '';
+        }, 4000);
+    }).catch(err => {
+        console.error('Erro ao copiar link: ', err);
+    });
 }
