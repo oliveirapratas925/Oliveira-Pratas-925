@@ -894,12 +894,16 @@ function openImageZoom(imgSrc, imgTitle, productId) {
     const modalTitle = document.getElementById('zoomModalTitle');
     
     currentZoomProductId = productId;
-    modal.style.display = 'flex';
-    modalImg.src = imgSrc;
-    modalImg.style.transform = 'scale(1)';
-    modalImg.style.cursor = 'zoom-in';
-    modalTitle.innerText = imgTitle;
-    document.getElementById('copyFeedback').innerText = '';
+    if (modal) modal.style.display = 'flex';
+    if (modalImg) {
+        modalImg.src = imgSrc;
+        modalImg.style.transform = 'scale(1)';
+        modalImg.style.cursor = 'zoom-in';
+    }
+    if (modalTitle) modalTitle.innerText = imgTitle;
+    
+    const feedback = document.getElementById('copyFeedback');
+    if (feedback) feedback.innerText = '';
 
     if (productId) {
         const newUrl = `${window.location.pathname}?produto=${productId}`;
