@@ -153,6 +153,19 @@ const PRODUCTS = [
     { id: 134, name: "Piercing Argola com Flor", price: 30, category: "PIERCINGS", image: "Piercing Argola com Flor.png", isBestSeller: false },
     { id: 135, name: "Piercing Argola Lisa", price: 30, category: "PIERCINGS", image: "Piercing Argola Lisa.png", isBestSeller: false },
     { id: 136, name: "Piercing Nariz Argola Coração", price: 30, category: "PIERCINGS", image: "Piercing Nariz Argola Coração.png", isBestSeller: false }
+   
+   // NOVOS PRODUTOS ADICIONADOS
+    { id: 137, name: "Tornozeleira Borboleta", price: 70, category: "TORNOZELEIRAS", image: "tornozeleira borboleta.jpg", isBestSeller: false },
+    { id: 140, name: "Tornozeleira Trevo", price: 70, category: "TORNOZELEIRAS", image: "tornozeleira trevo.jpg", isBestSeller: false },
+    { id: 141, name: "Tornozeleira Praia", price: 70, category: "TORNOZELEIRAS", image: "tornozeleira praia.jpg", isBestSeller: false },
+    { id: 142, name: "Trio de Brincos Quadrado", price: 50, category: "BRINCOS", image: "trio de brincos quadrado.jpg", isBestSeller: true },
+    { id: 143, name: "Trio de Brincos Redondo", price: 50, category: "BRINCOS", image: "trio de brincos redondo.jpg", isBestSeller: true },
+    { id: 144, name: "Par de Brincos Argola 2cm", price: 40, category: "BRINCOS", image: "par brincos argola 2cm.jpg", isBestSeller: false },
+    { id: 145, name: "Corrente Grumet 2mm 70cm", price: 130, category: "CORRENTES MASCULINAS", image: "corrente grumet 2mm 70cm.jpg", isBestSeller: true },
+    { id: 146, name: "Corrente Grumet 2mm 60cm", price: 100, category: "CORRENTES MASCULINAS", image: "corrente grumet 2mm 60cm.jpg", isBestSeller: true },
+    { id: 147, name: "Corrente Grumet Elo Duplo 5,5mm 70cm", price: 650, category: "CORRENTES MASCULINAS", image: "corrente grumet elo duplo 5,5mm 70cm.jpg", isBestSeller: false },
+    { id: 148, name: "Pulseira Pandora Coração Cravejado", price: 300, category: "PULSEIRAS FEMININAS", image: "pandora coração cravejado.jpg", isBestSeller: true }
+    { id: 137, name: "Tornozeleira Borboleta", price: 70, category: "TORNOZELEIRAS", image: "tornozeleira borboleta.jpg", isBestSeller: false },
 ];
 
 // TAXAS DE CARTÃO DE CRÉDITO
