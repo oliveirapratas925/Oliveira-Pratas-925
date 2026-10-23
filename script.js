@@ -285,9 +285,8 @@ function createProductCardHTML(product) {
     const isFav = favorites.includes(product.id);
     return `
         <div class="product-card">
-            <div class="product-img-wrapper" style="cursor: pointer;" onclick="openImageZoom('${product.image}', '${product.name}', ${product.id})" title="Clique para ver a imagem inteira e copiar o link">
-                <img src="${product.image}" alt="${product.name}" class="product-img" loading="lazy" style="object-fit: contain; background-color: #121216;" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/222/fff?text=Joia';">
-                <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite(${product.id})">
+            <div class="product-img-wrapper" style="cursor: pointer;">
+            <img src="${product.image}" alt="${product.name}" class="product-img" loading="lazy" style="object-fit: contain; background-color: #121216; cursor: pointer;" onclick="openImageZoom(this.src, '${product.name}', ${product.id})" title="Clique para ver a imagem inteira e copiar o link">                <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite(${product.id})">
                     ${isFav ? '❤️' : '🤍'}
                 </button>
             </div>
