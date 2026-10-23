@@ -176,6 +176,7 @@ const CREDIT_RATES = {
 let cart = JSON.parse(localStorage.getItem('op_cart')) || [];
 let favorites = JSON.parse(localStorage.getItem('op_favs')) || [];
 let activeCategory = 'TODOS';
+let currentZoomProductId = null;
 
 // RASTREABILIDADE GA4
 function trackGA4Event(eventName, params = {}) {
