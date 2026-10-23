@@ -286,7 +286,8 @@ function createProductCardHTML(product) {
     return `
         <div class="product-card">
             <div class="product-img-wrapper" style="cursor: pointer;">
-            <img src="${product.image}" alt="${product.name}" class="product-img" loading="lazy" style="object-fit: contain; background-color: #121216; cursor: pointer;" onclick="openImageZoom(this.src, '${product.name}', ${product.id})" title="Clique para ver a imagem inteira e copiar o link">                <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite(${product.id})">
+                <img src="${product.image}" alt="${product.name}" class="product-img" loading="lazy" style="object-fit: contain; background-color: #121216; cursor: pointer;" onclick="openImageZoom(this.src, '${product.name}', ${product.id})" title="Clique para ver a imagem inteira e copiar o link">
+                <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite(${product.id})">
                     ${isFav ? '❤️' : '🤍'}
                 </button>
             </div>
@@ -299,7 +300,6 @@ function createProductCardHTML(product) {
         </div>
     `;
 }
-
 function filterCatalog() {
     renderCatalog();
 }
