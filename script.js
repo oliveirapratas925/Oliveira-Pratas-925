@@ -328,8 +328,6 @@ function injectImageModalHTML() {
     document.body.insertAdjacentHTML('beforeend', modalHtml);
 }
 
-let currentZoomProductId = null;
-
 function openImageZoom(imgSrc, imgTitle, productId) {
     const modal = document.getElementById('imageZoomModal');
     const modalImg = document.getElementById('zoomModalImg');
