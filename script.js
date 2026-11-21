@@ -4,28 +4,6 @@
 
 // BASE DE DADOS OFICIAL DE PRODUTOS
 const PRODUCTS = [
-    // ALIANÇAS
-    { id: 1, name: "Aliança 4mm de Compromisso e Namoro em Prata 950 Legítima", price: 350, category: "ALIANÇAS", image: "Aliança 4mm De Compromisso E Namoro Em Prata 950 Legítima.png", isBestSeller: false },
-    { id: 2, name: "Aliança de Namoro Compromisso Prata 950 Diamantada 3mm", price: 270, category: "ALIANÇAS", image: "Aliança De Namoro Compromisso Prata 950 Diamantada 3mm.png", isBestSeller: false },
-    { id: 3, name: "Aliança de Namoro Zircônia Rosa em Prata 950 + Solitário", price: 285, category: "ALIANÇAS", image: "Aliança De Namoro Zircônia Rosa Em Prata 950 + Solitário.png", isBestSeller: false },
-    { id: 4, name: "Aliança Prata 950 Namoro + Anel Solitário", price: 349, category: "ALIANÇAS", image: "Aliança Prata 950 Namoro + Anel Solitário.png", isBestSeller: false },
-    { id: 5, name: "Alianças Coração Fio de Ouro + Solitário", price: 450, category: "ALIANÇAS", image: "Alianças Coração Fio De Ouro - Prata 950 Com Anel Solitário.png", isBestSeller: false },
-    { id: 6, name: "Alianças de Namoro com Pedra Roxa + Solitário", price: 299, category: "ALIANÇAS", image: "Alianças De Namoro Com Pedra Roxa Prata 950 + Anel Solitário.png", isBestSeller: false },
-    { id: 7, name: "Alianças de Namoro com Pedras de Zircônia Prata 950 – 5mm", price: 595, category: "ALIANÇAS", image: "Alianças De Namoro Com Pedras De Zircônia Prata 950- 5mm.png", isBestSeller: false },
-    { id: 8, name: "Alianças de Namoro Prata 950 Fina com Pedra Zircônia", price: 300, category: "ALIANÇAS", image: "Alianças De Namoro Prata 950 Fina Com Pedra Zircônia.png", isBestSeller: false },
-    { id: 9, name: "Alianças de Namoro Prata Legítima 2mm + Caixinha", price: 250, category: "ALIANÇAS", image: "Alianças De Namoro Prata Legítima 2mm + Caixinha.png", isBestSeller: false },
-    { id: 10, name: "Alianças Namoro Compromisso Prata 950 Chanfradas Polidas", price: 195, category: "ALIANÇAS", image: "Alianças Namoro Compromisso Em Prata 950 Chanfradas Polidas.png", isBestSeller: false },
-    { id: 11, name: "Alianças Pedra Roxa/Lilás + Solitário", price: 350, category: "ALIANÇAS", image: "Alianças Pedra Roxa lilás Prata 950 Legítima + Solitário.png", isBestSeller: false },
-    { id: 12, name: "Par Aliança Prata 7mm Chanfrada + Solitário", price: 300, category: "ALIANÇAS", image: "Par Aliança Prata 7mm Chanfrada E Solitário Namoro.png", isBestSeller: false },
-    { id: 13, name: "Par Aliança Prata 950 4mm + Solitário", price: 300, category: "ALIANÇAS", image: "Par Aliança Prata 950 Legitima 4mm Compromisso Com Solitário.png", isBestSeller: false },
-    { id: 14, name: "Par De Aliança De Namoro Com Pedra Alianças De Prata 950", price: 349, category: "ALIANÇAS", image: "Par De Aliança De Namoro Com Pedra Alianças De Prata 950.png", isBestSeller: false },
-    { id: 15, name: "Par de Aliança de Namoro com Pedra Zircônia Roxa", price: 399, category: "ALIANÇAS", image: "Par De Aliança De Namoro Com Pedra De Zircônia Roxa Prata 950.png", isBestSeller: false },
-    { id: 16, name: "Par de Alianças 1/2 Cana Diamantado", price: 194, category: "ALIANÇAS", image: "Par De Alianças Meia Cana Com Diamantado Prata 950 Legítima.png", isBestSeller: false },
-    { id: 17, name: "Par de Alianças com Pedra Zircônia Roxa + Solitário", price: 399, category: "ALIANÇAS", image: "Par de Alianças Com Pedra Zircônia Roxa + Anel Solitário.png", isBestSeller: false },
-    { id: 18, name: "Par de Alianças de Namoro com Anel Solitário", price: 249, category: "ALIANÇAS", image: "Par De Alianças De Namoro Com Anel Solitário.png", isBestSeller: false },
-    { id: 19, name: "Par de Alianças de Namoro Cravejada + Solitário", price: 399, category: "ALIANÇAS", image: "Par De Alianças De Namoro Cravejada Prata 950 Com Solitário.png", isBestSeller: false },
-    { id: 20, name: "Par de Alianças de Namoro Prata 950 Arredondada Polida", price: 199, category: "ALIANÇAS", image: "Par De Alianças De Namoro Prata 950 Arredondada Polida.png", isBestSeller: false },
-
     // ANÉIS
     { id: 22, name: "Anel Coroa azul bb", price: 60, category: "ANÉIS", image: "Anel Coroa azul bb.jpg", isBestSeller: false },
     { id: 23, name: "Anel de Prata 925 coração torcido", price: 50, category: "ANÉIS", image: "Anel de Prata 925 coração Torçido.jpg", isBestSeller: false },
@@ -41,7 +19,6 @@ const PRODUCTS = [
 
     // DEDEIRAS
     { id: 35, name: "Anel de prata 925 Flamengo", price: 270, category: "DEDEIRAS", image: "Anel de prata 925 Flamengo.png", isBestSeller: true },
-    { id: 36, name: "Anel Folha", price: 200, category: "DEDEIRAS", image: "Anel Folha.png", isBestSeller: true },
 
     // BRINCOS
     { id: 37, name: "Brinco Redondo 12mm", price: 80, category: "BRINCOS", image: "Brinco Redondo 12mm de Prata 925.png", isBestSeller: true },
@@ -83,7 +60,6 @@ const PRODUCTS = [
     { id: 76, name: "Corrente Grumet 7mm – 80cm", price: 999, category: "CORRENTES MASCULINAS", image: "Corrente Grumet 7mm - 80cm Prata 925.png", isBestSeller: false },
     { id: 77, name: "Corrente Grumet 10mm 70cm", price: 1400, category: "CORRENTES MASCULINAS", image: "Corrente Grumet 10mm 70cm.jpg", isBestSeller: false },
     { id: 78, name: "Corrente Grumet 7,3mm 70cm com Fecho Gaveta", price: 849, category: "CORRENTES MASCULINAS", image: "Corrente Grumet em Prata 925 - Fecho Gaveta.jpeg", isBestSeller: false },
-    { id: 79, name: "Corrente Gucci 3,5mm – 70cm", price: 299, category: "CORRENTES MASCULINAS", image: "Corrente Gucci 3,5mm - 70cm Prata 925.png", isBestSeller: false },
     { id: 80, name: "Corrente Piastrine 3,5mm – 70cm", price: 399, category: "CORRENTES MASCULINAS", image: "Corrente Piastrine 3,5mm - 70cm Prata 925.png", isBestSeller: false },
     { id: 81, name: "Corrente Grumet 1,5mm 70cm", price: 80, category: "CORRENTES MASCULINAS", image: "Corrente Grumet 1,5mm 70cm.jpg", isBestSeller: false },
     { id: 82, name: "Corrente Grumet 3mm 70cm", price: 300, category: "CORRENTES MASCULINAS", image: "Corrente Grumet 3mm 70cm.jpg", isBestSeller: false },
@@ -117,7 +93,6 @@ const PRODUCTS = [
     { id: 110, name: "Pingente São Jorge", price: 50, category: "PINGENTES", image: "Pingente São Jorge.jpg", isBestSeller: false },
 
     // PULSEIRAS MASCULINAS
-    { id: 112, name: "Pulseira 8,2mm", price: 299, category: "PULSEIRAS MASCULINAS", image: "pulseira8,2mm.jpg", isBestSeller: true },
     { id: 113, name: "Pulseira Esteira 2,4mm", price: 99, category: "PULSEIRAS MASCULINAS", image: "pulseira esteira 2,4mm.jpg", isBestSeller: true },
     { id: 115, name: "Pulseira Tripla", price: 90, category: "PULSEIRAS MASCULINAS", image: "Pulseira Tripla.jpg", isBestSeller: true },
 
